@@ -4,12 +4,14 @@
     <Repolist />
     <Container />
     <div ref="listElm" class="more-content" />
+    <Loading />
   </div>
 </template>
 
 <script>
 import Repolist from './components/repolist.vue'
 import Container from './components/container.vue'
+import Loading from './components/loading.vue'
 
 const { Octokit } = require("@octokit/core");
 const octokit = new Octokit();
@@ -18,7 +20,8 @@ export default {
   name: 'App',
   components: {
     Repolist,
-    Container
+    Container,
+    Loading
   },
   data() {
     return {
@@ -29,8 +32,8 @@ export default {
   mounted() {
     window.addEventListener('scroll', () => {
       const {scrollHeight, scrollTop, clientHeight} = document.documentElement
-      if(scrollTop + clientHeight >= scrollHeight) {
-        this.loadMore()
+      if(scrollTop + clientHeight >= scrollHeight - 10) {
+        setTimeout(this.loadMore, 1500)
       }
     })
   },
@@ -57,6 +60,10 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
 
+html {
+  background-color: rgba(245, 219, 164, .1);
+}
+
 html body #app {
   height: 100%;
 }
@@ -82,6 +89,11 @@ html body #app {
   width: 25%;
   padding: 2%;
   word-break: break-word;
+}
+.list-item:hover {
+  background-color: rgba(245, 219, 164, .7);
+  border-radius: 2px;
+  cursor: pointer;
 }
 .link {
   font-size: .8rem;
